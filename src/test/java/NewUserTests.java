@@ -17,13 +17,11 @@ public class NewUserTests extends TestBase {
                 .contentType(JSON)
                 .log().uri()
                 .when()
-                .post()
-
+                .post("/users")
                 .then()
                 .log().status()
                 .log().body()
                 .statusCode(201)
-
                 .body("$", allOf(
                         hasKey("name"),
                         hasKey("job"),
@@ -42,13 +40,11 @@ public class NewUserTests extends TestBase {
                 .contentType(JSON)
                 .log().uri()
                 .when()
-                .post()
-
+                .post("/users")
                 .then()
                 .log().status()
                 .log().body()
                 .statusCode(201)
-
                 .body("name", is("Karlos"))
                 .body("job", is("lawyer"))
                 .body("$", allOf(
@@ -67,13 +63,11 @@ public class NewUserTests extends TestBase {
                 .contentType(JSON)
                 .log().uri()
                 .when()
-                .post()
-
+                .post("/users")
                 .then()
                 .log().status()
                 .log().body()
                 .statusCode(201)
-
                 .body("$", allOf(
                         hasKey("id"),
                         hasKey("createdAt")
@@ -90,13 +84,11 @@ public class NewUserTests extends TestBase {
                 .contentType(JSON)
                 .log().uri()
                 .when()
-                .post()
-
+                .post("/users")
                 .then()
                 .log().status()
                 .log().body()
                 .statusCode(201)
-
                 .body("name", is("Sophi"))
                 .body("job", is("devops"))
                 .body("age", is("32"))
@@ -116,14 +108,74 @@ public class NewUserTests extends TestBase {
                 .contentType(JSON)
                 .log().uri()
                 .when()
-                .post()
-
+                .post("/users")
                 .then()
                 .log().status()
                 .log().body()
                 .statusCode(400)
-
                 .body("error", is("Empty request body"))
                 .body("message", is("Request body cannot be empty for JSON endpoints"));
+    }
+
+    @Test
+    @DisplayName("Новый пользователь: корректировка данных")
+    void userDataUpdateTest() {
+
+        given()
+                .header(TestData.apiKey)
+                .body(TestData.extraData)
+                .contentType(JSON)
+                .log().uri()
+                .when()
+                .put("/users/2")
+                .then()
+                .log().status()
+                .log().body()
+                .statusCode(200)
+                .body("name", is("Sophi"))
+                .body("job", is("devops"))
+                .body("age", is("32"))
+                .body("$", hasKey("updatedAt"));
+    }
+
+    @Test
+    @DisplayName("Новый пользователь: удаление")
+    void userDeleteTest() {
+
+        given()
+                .header(TestData.apiKey)
+                .body(TestData.extraData)
+                .contentType(JSON)
+                .log().uri()
+                .when()
+                .delete("/users/2")
+                .then()
+                .log().status()
+                .log().body()
+                .statusCode(204)
+                .body(is(emptyString()));
+    }
+
+    @Test
+    @DisplayName("В списке пользователей существует хотя бы один пользователь")
+    void userListNotEmpty() {
+        given()
+                .header(TestData.apiKey)
+                .contentType(JSON)
+                .log().uri()
+                .when()
+                .queryParam("page", "2")
+                .get("/users")
+                .then()
+                .log().status()
+                .log().body()
+                .statusCode(200)
+                .body("data", hasItem(allOf(
+                        hasKey("id"),
+                        hasKey("email"),
+                        hasKey("first_name"),
+                        hasKey("last_name"),
+                        hasKey("avatar")
+                )));
     }
 }
