@@ -36,7 +36,7 @@ dependencies {
     )
 }
 
-task smokeApiUserTests(type: Test){
+task smoke_api_user_tests(type: Test){
     useJUnitPlatform{
         includeTags("smokeApiUserTests")
     }
