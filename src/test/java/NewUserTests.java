@@ -11,6 +11,7 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static specs.UserSpec.*;
+import static specs.UserSpec.userResponseSpec;
 
 public class NewUserTests extends TestBase {
 
@@ -20,12 +21,12 @@ public class NewUserTests extends TestBase {
     void successfullNewUserTest() {
 
         UserCreateResponse response = step("newUserWithRequiredBodyReq", () -> given(userRequestSpec)
-                .header(TestData.apiKey)
-                .body(TestData.validData)
+                .header(TestData.API_KEY)
+                .body(TestData.VALID_DATA)
                 .when()
                 .post("/users")
                 .then()
-                .spec(newUserResponseSpec)
+                .spec(userResponseSpec(201))
                 .extract().as(UserCreateResponse.class));
 
         step("checkRequiredFieldsInResp", () -> {
@@ -42,12 +43,12 @@ public class NewUserTests extends TestBase {
     void nameJobFromReqTest() {
 
         UserCreateResponse response = step("newUserWithNameJobReq", () -> given(userRequestSpec)
-                .header(TestData.apiKey)
-                .body(TestData.validData)
+                .header(TestData.API_KEY)
+                .body(TestData.VALID_DATA)
                 .when()
                 .post("/users")
                 .then()
-                .spec(newUserResponseSpec)
+                .spec(userResponseSpec(201))
                 .extract().as(UserCreateResponse.class));
 
         step("checkNameJobResp", () -> {
@@ -64,12 +65,12 @@ public class NewUserTests extends TestBase {
     void emptyDataTest() {
 
         UserCreateResponse response = step("emptyDataReq", () -> given(userRequestSpec)
-                .header(TestData.apiKey)
-                .body(TestData.emptyData)
+                .header(TestData.API_KEY)
+                .body(TestData.EMPTY_DATA)
                 .when()
                 .post("/users")
                 .then()
-                .spec(newUserResponseSpec)
+                .spec(userResponseSpec(201))
                 .extract().as(UserCreateResponse.class));
 
         step("checkEmptyDataResp", () -> {
@@ -84,12 +85,12 @@ public class NewUserTests extends TestBase {
     void extraDataTest() {
 
         UserCreateResponse response = step("extraFieldsNewUserReq", () -> given(userRequestSpec)
-                .header(TestData.apiKey)
-                .body(TestData.extraData)
+                .header(TestData.API_KEY)
+                .body(TestData.EXTRA_DATA)
                 .when()
                 .post("/users")
                 .then()
-                .spec(newUserResponseSpec)
+                .spec(userResponseSpec(201))
                 .extract().as(UserCreateResponse.class));
 
         step("checkRespWithNewField", () -> {
@@ -107,12 +108,12 @@ public class NewUserTests extends TestBase {
     void emptyBodyReqTest() {
 
         UserErrorResponse response = step("emptyBodyReq", () -> given(userRequestSpec)
-                .header(TestData.apiKey)
-                .body(TestData.emptyBody)
+                .header(TestData.API_KEY)
+                .body(TestData.EMPTY_BODY)
                 .when()
                 .post("/users")
                 .then()
-                .spec(emptyBodyErrorResponseSpec)
+                .spec(userResponseSpec(400))
                 .extract().as(UserErrorResponse.class));
 
         step("checkEmptyBodyError", () -> {
@@ -127,12 +128,12 @@ public class NewUserTests extends TestBase {
     void userDataUpdateTest() {
 
         UserUpdateResponse response = step("updateUserDataReq", () -> given(userRequestSpec)
-                .header(TestData.apiKey)
-                .body(TestData.extraData)
+                .header(TestData.API_KEY)
+                .body(TestData.EXTRA_DATA)
                 .when()
                 .put("/users/2")
                 .then()
-                .spec(userResponseSpec)
+                .spec(userResponseSpec(200))
                 .extract().as(UserUpdateResponse.class));
 
         step("checkUserDataUpdated", () -> {
@@ -149,12 +150,12 @@ public class NewUserTests extends TestBase {
     void userDeleteTest() {
 
         String rsponse = step("deleteUserReq", () -> given(userRequestSpec)
-                .header(TestData.apiKey)
-                .body(TestData.extraData)
+                .header(TestData.API_KEY)
+                .body(TestData.EXTRA_DATA)
                 .when()
                 .delete("/users/2")
                 .then()
-                .spec(deleteUserResponseSpec)
+                .spec(userResponseSpec(204))
                 .extract().body().asString());
 
         step("checkUserDeleted", () -> assertEquals("", rsponse));
@@ -168,7 +169,7 @@ public class NewUserTests extends TestBase {
                 .queryParam("page", "2")
                 .get("/users")
                 .then()
-                .spec(userResponseSpec)
+                .spec(userResponseSpec(200))
                 .extract().as(UsersListResponse.class));
 
         step("checkMoreThanOneUserInList", () -> {
