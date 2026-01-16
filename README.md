@@ -96,7 +96,7 @@ reqres-api-tests/
 [JENKINS](https://jenkins.autotests.cloud/job/reqresApiWithSpec/)
 
 <p align="center">
-<img src="media/screenshots/jenkins-vprokru-tests-web.png" alt="Jenkins Build" width="791" height="470">
+<img src="" alt="Jenkins Build" width="791" height="470">
 </p>
 
 ---
@@ -108,13 +108,13 @@ reqres-api-tests/
 ### 🖨️ Главная страница отчета
 
 <p align="center">
-<img src="media/screenshots/allure-results-web.png" alt="Allure report WEB" width="791" height="470">
+<img src="" alt="Allure report WEB" width="791" height="470">
 </p>
 
 ### 📄 Тест-кейсы
 
 <p align="center">
-<img src="media/screenshots/allure-tests-web.png" alt="Test Case WEB" width="791" height="470">
+<img src="" alt="Test Case WEB" width="791" height="470">
 </p>
 
 ---
