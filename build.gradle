@@ -4,8 +4,24 @@ plugins {
     id "io.freefair.lombok" version "9.1.0"
 }
 
+group = 'qa.demo'
+version = '1.0-SNAPSHOT'
+
 repositories {
     mavenCentral()
+}
+
+allure {
+    report {
+        version.set("2.24.0")
+    }
+    adapter {
+        frameworks {
+            junit5 {
+                adapterVersion.set("2.24.0")
+            }
+        }
+    }
 }
 
 def
@@ -20,6 +36,7 @@ dependencies {
     testImplementation "io.rest-assured:rest-assured:$restAssured"
     testImplementation "io.rest-assured:json-schema-validator:$restAssured"
     testImplementation "io.qameta.allure:allure-rest-assured:$allureVersion"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 test {
